@@ -66,6 +66,14 @@ public class NoteEditor extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        super.onDestroy();
+    }
+
     private void saveNote(){
         EditText editText = (EditText) findViewById(R.id.editTextNote);
         String note = editText.getText().toString();
@@ -76,7 +84,6 @@ public class NoteEditor extends AppCompatActivity {
             saveNoteToDB(note);
             savedNoteAsTextFile(note);
         }
-
 
         //code to hide the soft keyboard while leaving activity
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

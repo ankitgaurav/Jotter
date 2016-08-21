@@ -57,7 +57,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
-    public void deleteNote(String note_id){
+    public void deleteNote(int note_id){
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         String deleteQuery = "DELETE FROM " + TABLE_NOTES + " WHERE " + COLUMN_ID + " = \"" +
                 note_id + "\";" ;
@@ -77,7 +77,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         while(!cursor.isAfterLast()){
             Note note = new Note();
-            note.set_id(cursor.getString(0));
+            note.set_id(Integer.parseInt(cursor.getString(0)));
             note.setNoteText(cursor.getString(1));
             note.setCreatedAt(cursor.getString(2));
             noteArrayList.add(note);

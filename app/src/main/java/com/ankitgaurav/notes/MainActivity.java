@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity{
                 startActivity(intent);
             }
         });
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
         final MyDBHandler dbHandler = new MyDBHandler(this);
         ArrayList<Note> arrayList = dbHandler.dbToNoteObjectArrayList();
@@ -56,7 +54,7 @@ public class MainActivity extends AppCompatActivity{
                 Object o = listView.getItemAtPosition(position);
                 Note note=(Note)o;
                 Intent intent = new Intent(getApplicationContext(), DetailedNote.class);
-                intent.putExtra("note_id", Long.parseLong(note.get_id()));
+                intent.putExtra("note_id", note.get_id());
                 intent.putExtra("note_created_at", note.getCreatedAt());
                 intent.putExtra("noteText", note.getNoteText());
                 startActivity(intent);
@@ -78,7 +76,6 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;

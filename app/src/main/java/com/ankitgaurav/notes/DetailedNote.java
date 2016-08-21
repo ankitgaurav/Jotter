@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -24,7 +25,7 @@ import java.util.Locale;
 public class DetailedNote extends AppCompatActivity {
 
     MyDBHandler dbHandler;
-    private Long n_id;
+    private static int n_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +33,8 @@ public class DetailedNote extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.detailed_note_toolbar);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
-        ab.setHomeButtonEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
+        dbHandler = new MyDBHandler(this);
 
         //Setting floating button for editing current note
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_edit_note);
@@ -46,14 +47,22 @@ public class DetailedNote extends AppCompatActivity {
 //        });
 
         Intent intent = getIntent();
-
         //Getting variables here
         String note_created_at = intent.getStringExtra("note_created_at");
         String noteText = intent.getStringExtra("noteText");
 
+        if (savedInstanceState != null) {
+            n_id = savedInstanceState.getInt("note_id");
+        } else {
+            n_id = intent.getIntExtra("note_id", 0);
+        }
 
         //Setting variables here
-        ab.setTitle(note_created_at);
+        try {
+            ab.setTitle(getDateTime(note_created_at));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         TextView textView = (TextView) findViewById(R.id.detailedNoteTextView);
         textView.setText(noteText);
 //        n_id = (savedInstanceState == null) ? null :
@@ -75,33 +84,34 @@ public class DetailedNote extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete:
-                //deleteThisNote();
+                deleteThisNote();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-//    @Override
-//    protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putSerializable("note_id", n_id);
-//    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("note_id", n_id);
+        super.onSaveInstanceState(outState);
+    }
 
-//    public void deleteThisNote(){
-//        try {
-//            if(n_id != null){
-//                dbHandler.deleteNote(n_id.toString());
-//            }
-//        }
-//        catch (Exception e){
-//            Toast.makeText(getApplicationContext(), "Delete operation failed" + e, Toast
-//                    .LENGTH_SHORT).show();
-//        }
-//        returnHome();
-//    }
+    public void deleteThisNote(){
+        Log.e("n_id: ", n_id+"");
+        dbHandler.deleteNote(n_id);
+        returnHome();
+    }
     private void returnHome(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+    private String getDateTime(String dateStr) throws ParseException {
+        SimpleDateFormat prevDateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = prevDateFormat.parse(dateStr);
+        SimpleDateFormat newDateFormat = new SimpleDateFormat(
+                "dd MMM, HH:mm:aa", Locale.getDefault());
+        return newDateFormat.format(date);
     }
 }
