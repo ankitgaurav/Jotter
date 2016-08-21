@@ -13,8 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Checkable;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -39,12 +41,11 @@ public class MainActivity extends AppCompatActivity{
                 startActivity(intent);
             }
         });
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
-
-
-        MyDBHandler dbHandler = new MyDBHandler(this);
+        final MyDBHandler dbHandler = new MyDBHandler(this);
         ArrayList<Note> arrayList = dbHandler.dbToNoteObjectArrayList();
-
 
         NotesAdapter notesAdapter = new NotesAdapter(this, arrayList);
         final ListView listView = (ListView) findViewById(R.id.ListView);
@@ -55,10 +56,17 @@ public class MainActivity extends AppCompatActivity{
                 Object o = listView.getItemAtPosition(position);
                 Note note=(Note)o;
                 Intent intent = new Intent(getApplicationContext(), DetailedNote.class);
+                intent.putExtra("note_id", note.get_id());
+                intent.putExtra("note_created_at", note.getCreatedAt());
                 intent.putExtra("noteText", note.getNoteText());
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 
     @Override
@@ -78,5 +86,4 @@ public class MainActivity extends AppCompatActivity{
 
         return super.onOptionsItemSelected(item);
     }
-
 }

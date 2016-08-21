@@ -23,8 +23,13 @@
         </activity>
         <activity
             android:name=".NoteEditor"
-            android:label="New Note" />
-        <activity android:name=".DetailedNote"></activity>
+            android:label="New Note"
+            android:noHistory="true"
+            android:parentActivityName="com.ankitgaurav.notes.MainActivity"
+            />
+        <activity android:name=".DetailedNote"
+            android:noHistory="true"
+            android:parentActivityName="com.ankitgaurav.notes.MainActivity"></activity>
     </application>
 
 </manifest>

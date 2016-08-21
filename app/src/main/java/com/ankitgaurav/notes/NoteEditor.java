@@ -3,6 +3,7 @@ package com.ankitgaurav.notes;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -32,9 +33,12 @@ public class NoteEditor extends AppCompatActivity {
         setContentView(R.layout.activity_note_editor);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+
         dbHandler = new MyDBHandler(this);
 
-        //code to show softkeyboard while entering into noteEditor activity
+      //code to show softkeyboard while entering into noteEditor activity
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
@@ -62,8 +66,14 @@ public class NoteEditor extends AppCompatActivity {
     private void saveNote(){
         EditText editText = (EditText) findViewById(R.id.editTextNote);
         String note = editText.getText().toString();
-        saveNoteToDB(note);
-        savedNoteAsTextFile(note);
+        if (note.equals("")) {
+            returnHome();
+        }
+        else{
+            saveNoteToDB(note);
+            savedNoteAsTextFile(note);
+        }
+
 
         //code to hide the soft keyboard while leaving activity
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

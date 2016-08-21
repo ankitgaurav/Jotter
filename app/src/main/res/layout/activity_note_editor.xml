@@ -23,8 +23,6 @@
         android:id="@+id/editTextNote"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:allowUndo="false"
-        android:autoLink="web"
         android:backgroundTint="#00ffffff"
         android:elegantTextHeight="true"
         android:outlineProvider="none"

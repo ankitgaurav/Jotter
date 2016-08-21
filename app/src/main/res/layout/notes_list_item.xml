@@ -3,7 +3,8 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:padding="10dp"
     android:paddingLeft="10dp"
-    android:layout_height="match_parent">
+    android:layout_height="80sp"
+    >
     <TextView
         android:text="Hello Bello"
         android:id="@+id/note_text"

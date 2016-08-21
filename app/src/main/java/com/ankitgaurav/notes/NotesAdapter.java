@@ -27,7 +27,16 @@ public class NotesAdapter extends ArrayAdapter<Note> {
         }
         TextView note_text = (TextView) convertView.findViewById(R.id.note_text);
         TextView note_created_at = (TextView) convertView.findViewById(R.id.note_created_at);
-        note_text.setText(note.getNoteText());
+        String noteFullText = note.getNoteText();
+        String noteSnippet = "";
+        if(noteFullText.length()>80){
+            noteSnippet = noteFullText.substring(0,80) + " ...";
+        }
+        else{
+            noteSnippet = noteFullText;
+        }
+
+        note_text.setText(noteSnippet);
         note_created_at.setText(note.getCreatedAt());
 
         return convertView;

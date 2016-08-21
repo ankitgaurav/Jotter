@@ -29,8 +29,10 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String query1 = "CREATE TABLE " + TABLE_NOTES + " ( " + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_NOTE_TEXT +
-                " TEXT, "+ COLUMN_CREATED_AT +" DATE DEFAULT CURRENT_TIMESTAMP);";
+        String query1 = "CREATE TABLE " + TABLE_NOTES + " ( " +
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_NOTE_TEXT + " TEXT, " +
+                COLUMN_CREATED_AT +" DATETIME DEFAULT " + "CURRENT_TIMESTAMP);";
         sqLiteDatabase.execSQL(query1);
     }
 
@@ -52,23 +54,12 @@ public class MyDBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
-    public ArrayList<String> dbToArrayList(){
-        Note note = new Note();
-        ArrayList<String> arrayList = new ArrayList<>();
-
-        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-
-        String query = "SELECT * FROM "+ TABLE_NOTES + " WHERE 1 ORDER BY "+COLUMN_CREATED_AT+" DESC";
-        Cursor cursor = sqLiteDatabase.rawQuery(query, null);
-        cursor.moveToFirst();
-
-        while (!cursor.isAfterLast()){
-            if(cursor.getString(cursor.getColumnIndex(COLUMN_NOTE_TEXT)) != null){
-                arrayList.add(cursor.getString(cursor.getColumnIndex(COLUMN_NOTE_TEXT)));
-            }
-            cursor.moveToNext();
-        }
-        return arrayList;
+    public void deleteNote(String note_id){
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        String deleteQuery = "DELETE FROM " + TABLE_NOTES + " WHERE " + COLUMN_ID + " = \"" +
+                note_id + "\";" ;
+        sqLiteDatabase.execSQL(deleteQuery);
+        sqLiteDatabase.close();
     }
 
     public ArrayList<Note> dbToNoteObjectArrayList(){
@@ -76,7 +67,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
         ArrayList<Note> noteArrayList = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
 
-        String query = "SELECT * FROM "+ TABLE_NOTES +" WHERE 1 ORDER BY "+ COLUMN_CREATED_AT+" DESC";
+        String query = "SELECT * FROM "+ TABLE_NOTES +" WHERE 1 ORDER BY "+ COLUMN_CREATED_AT +
+                "" + " DESC";
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
         cursor.moveToFirst();
 
