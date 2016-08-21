@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:padding="10dp"
     android:paddingLeft="10dp"
-    android:layout_height="80sp"
+    android:layout_height="90sp"
     >
     <TextView
         android:text="Hello Bello"
         android:id="@+id/note_text"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAppearance="@string/abc_font_family_body_1_material"
         android:paddingRight="3dp"
         android:paddingLeft="3dp"
-        android:textSize="17sp" />
+        android:textSize="18sp" />
     <TextView
         android:text="12pm"
         android:id="@+id/note_created_at"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        />
+
 </LinearLayout>

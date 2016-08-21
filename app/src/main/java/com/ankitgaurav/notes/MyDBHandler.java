@@ -7,8 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.sql.Date;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by Ankit Gaurav on 15-08-2016.
@@ -32,7 +34,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         String query1 = "CREATE TABLE " + TABLE_NOTES + " ( " +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_NOTE_TEXT + " TEXT, " +
-                COLUMN_CREATED_AT +" DATETIME DEFAULT " + "CURRENT_TIMESTAMP);";
+                COLUMN_CREATED_AT +" DATETIME );";
         sqLiteDatabase.execSQL(query1);
     }
 
@@ -49,6 +51,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public void addNote(String note){
         ContentValues values = new ContentValues();
         values.put(COLUMN_NOTE_TEXT, note);
+        values.put(COLUMN_CREATED_AT, getDateTime());
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         sqLiteDatabase.insert(TABLE_NOTES, null, values);
         sqLiteDatabase.close();
@@ -74,7 +77,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         while(!cursor.isAfterLast()){
             Note note = new Note();
-            note.set_id(Integer.parseInt(cursor.getString(0)));
+            note.set_id(cursor.getString(0));
             note.setNoteText(cursor.getString(1));
             note.setCreatedAt(cursor.getString(2));
             noteArrayList.add(note);
@@ -82,5 +85,12 @@ public class MyDBHandler extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         return noteArrayList;
+    }
+
+    private String getDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 }

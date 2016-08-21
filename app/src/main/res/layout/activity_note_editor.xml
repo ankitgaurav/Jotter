@@ -18,9 +18,10 @@
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="400dp"
-        android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/editTextNote"
+        android:textAppearance="@string/abc_font_family_body_1_material"
+        android:textSize="18sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:backgroundTint="#00ffffff"
@@ -29,5 +30,7 @@
         android:scrollIndicators="right"
         android:gravity="start"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp" />
+        android:paddingRight="16dp"
+        android:inputType="textCapSentences|textMultiLine"
+        />
 </LinearLayout>

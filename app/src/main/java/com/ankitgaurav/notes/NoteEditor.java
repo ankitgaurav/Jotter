@@ -20,7 +20,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 public class NoteEditor extends AppCompatActivity {
@@ -35,6 +37,7 @@ public class NoteEditor extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
+        ab.setTitle(getDateTime());
 
         dbHandler = new MyDBHandler(this);
 
@@ -123,7 +126,6 @@ public class NoteEditor extends AppCompatActivity {
                 outputStreamWriter.close();
                 fileOutputStream.close();
                 Toast.makeText(this, "/sdcard/"+fileName+": Note saved", Toast.LENGTH_SHORT).show();
-                Log.i("Note", note);
             }
             catch (IOException e) {
                 e.printStackTrace();
@@ -132,5 +134,12 @@ public class NoteEditor extends AppCompatActivity {
         else{
             Toast.makeText(this, "Write permission forbidden.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private String getDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "dd MMM, HH:mm:aa", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 }

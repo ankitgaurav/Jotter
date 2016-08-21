@@ -18,7 +18,8 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="@string/abc_font_family_body_1_material"
+        android:textSize="18sp"
         android:text="Large Text"
         android:id="@+id/detailedNoteTextView"
         android:layout_below="@+id/detailed_note_toolbar"

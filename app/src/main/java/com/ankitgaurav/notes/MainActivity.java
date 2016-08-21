@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity{
                 Object o = listView.getItemAtPosition(position);
                 Note note=(Note)o;
                 Intent intent = new Intent(getApplicationContext(), DetailedNote.class);
-                intent.putExtra("note_id", note.get_id());
+                intent.putExtra("note_id", Long.parseLong(note.get_id()));
                 intent.putExtra("note_created_at", note.getCreatedAt());
                 intent.putExtra("noteText", note.getNoteText());
                 startActivity(intent);

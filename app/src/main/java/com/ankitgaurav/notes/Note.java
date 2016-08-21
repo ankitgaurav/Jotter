@@ -6,24 +6,24 @@ import java.util.Date;
  * Created by Ankit Gaurav on 17-08-2016.
  */
 public class Note {
-    private int _id;
+    private String _id;
     private String noteText;
     private String createdAt;
 
     public Note() {
     }
 
-    public Note(int _id, String noteText, String createdAt) {
+    public Note(String _id, String noteText, String createdAt) {
         this._id = _id;
         this.noteText = noteText;
         this.createdAt = createdAt;
     }
 
-    public int get_id() {
+    public String get_id() {
         return _id;
     }
 
-    public void set_id(int _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
 
