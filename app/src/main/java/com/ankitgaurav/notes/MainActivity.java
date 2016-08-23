@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Checkable;
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity{
         final MyDBHandler dbHandler = new MyDBHandler(this);
         ArrayList<Note> arrayList = dbHandler.dbToNoteObjectArrayList();
 
-        NotesAdapter notesAdapter = new NotesAdapter(this, arrayList);
+        final NotesAdapter notesAdapter = new NotesAdapter(this, arrayList);
         final ListView listView = (ListView) findViewById(R.id.ListView);
         listView.setAdapter(notesAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -76,8 +79,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_search) {
             return true;
         }
 

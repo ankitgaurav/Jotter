@@ -3,6 +3,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
-    <string name="app_name">Notes</string>
+    <string name="app_name">Jotter</string>
     <string name="action_settings">Settings</string>
+    <string name="action_search">Search</string>
 </resources>
