@@ -65,6 +65,15 @@ public class MyDBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
+    public void updateNote(int note_id, String note_text){
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        String deleteQuery = "UPDATE " + TABLE_NOTES + " SET "+ COLUMN_NOTE_TEXT +" = + note_text + WHERE " +
+                "" + COLUMN_ID + " = \"" +
+                note_id + "\";" ;
+        sqLiteDatabase.execSQL(deleteQuery);
+        sqLiteDatabase.close();
+    }
+
     public ArrayList<Note> dbToNoteObjectArrayList(){
 
         ArrayList<Note> noteArrayList = new ArrayList<>();

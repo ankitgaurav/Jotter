@@ -34,9 +34,14 @@ public class NotesAdapter extends ArrayAdapter<Note> {
         TextView note_text = (TextView) convertView.findViewById(R.id.note_text);
         TextView note_created_at = (TextView) convertView.findViewById(R.id.note_created_at);
         String noteFullText = note.getNoteText();
+        int lineBreakPos = noteFullText.indexOf('\n');
         String noteSnippet = "";
-        if(noteFullText.length()>60){
-            noteSnippet = noteFullText.substring(0,60) + " ...";
+        int snippetLength = 80;
+        if(lineBreakPos < 80){
+            snippetLength = 50;
+        }
+        if(noteFullText.length()>snippetLength){
+            noteSnippet = noteFullText.substring(0,snippetLength) + " ...";
         }
         else{
             noteSnippet = noteFullText;

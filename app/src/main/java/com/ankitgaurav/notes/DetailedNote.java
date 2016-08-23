@@ -35,29 +35,16 @@ public class DetailedNote extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         dbHandler = new MyDBHandler(this);
-
-        //Setting floating button for editing current note
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_edit_note);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getApplicationContext(), NoteEditor.class);
-//                startActivity(intent);
-//            }
-//        });
-
         Intent intent = getIntent();
-        //Getting variables here
-        String note_created_at = intent.getStringExtra("note_created_at");
-        String noteText = intent.getStringExtra("noteText");
 
+        String note_created_at = intent.getStringExtra("note_created_at");
+        final String noteText = intent.getStringExtra("noteText");
         if (savedInstanceState != null) {
             n_id = savedInstanceState.getInt("note_id");
         } else {
             n_id = intent.getIntExtra("note_id", 0);
         }
 
-        //Setting variables here
         try {
             ab.setTitle(getDateTime(note_created_at));
         } catch (ParseException e) {
@@ -65,12 +52,6 @@ public class DetailedNote extends AppCompatActivity {
         }
         TextView textView = (TextView) findViewById(R.id.detailedNoteTextView);
         textView.setText(noteText);
-//        n_id = (savedInstanceState == null) ? null :
-//                (Long) savedInstanceState.getSerializable("note_id");
-//        if(n_id == null){
-//            n_id  = (Long.parseLong(intent.getStringExtra("note_id")));
-//        }
-
     }
 
     @Override
@@ -98,8 +79,8 @@ public class DetailedNote extends AppCompatActivity {
     }
 
     public void deleteThisNote(){
-        Log.e("n_id: ", n_id+"");
         dbHandler.deleteNote(n_id);
+        Toast.makeText(this, "Note deleted successfully", Toast.LENGTH_SHORT).show();
         returnHome();
     }
     private void returnHome(){

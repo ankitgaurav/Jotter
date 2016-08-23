@@ -23,12 +23,10 @@ import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
 
 public class NoteEditor extends AppCompatActivity {
 
     MyDBHandler dbHandler;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +36,6 @@ public class NoteEditor extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setTitle(getDateTime());
-
         dbHandler = new MyDBHandler(this);
 
       //code to show softkeyboard while entering into noteEditor activity
