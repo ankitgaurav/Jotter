@@ -84,7 +84,7 @@ public class DetailedNote extends AppCompatActivity {
         returnHome();
     }
     private void returnHome(){
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
     private String getDateTime(String dateStr) throws ParseException {

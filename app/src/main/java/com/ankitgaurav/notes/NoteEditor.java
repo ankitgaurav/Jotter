@@ -88,7 +88,7 @@ public class NoteEditor extends AppCompatActivity {
         returnHome();
     }
     private void returnHome(){
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
 
