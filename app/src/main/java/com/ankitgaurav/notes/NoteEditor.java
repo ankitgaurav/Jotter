@@ -43,6 +43,7 @@ public class NoteEditor extends AppCompatActivity {
         String editType = intent.getStringExtra("type");
 
         if(editType.equals("new")){
+            n_id = -1;
             ab.setTitle(getDateTime());
         }
         else if(editType.equals("edit")){
@@ -93,11 +94,19 @@ public class NoteEditor extends AppCompatActivity {
     private void saveNote(){
         EditText editText = (EditText) findViewById(R.id.editTextNote);
         String note = editText.getText().toString();
-        if (note.equals("")) {
+        if (note.equals("")) {//Empty note discarded
             returnHome();
         }
         else{
-            saveNoteToDB(note);
+            Note note1 = new Note();
+            note1.setNoteText(note);
+            note1.setCreatedAt(getDateTime());
+            if(n_id != -1){//Code to edit existing note
+                dbHandler.updateNote(n_id, note1);
+            }
+            else{//code to add new note to database
+                saveNoteToDB(note1);
+            }
             savedNoteAsTextFile(note);
         }
 
@@ -121,7 +130,7 @@ public class NoteEditor extends AppCompatActivity {
     }
 
     /* Save Note to SQLite Database */
-    public void saveNoteToDB(String note){
+    public void saveNoteToDB(Note note){
         try{
             dbHandler.addNote(note);
         }catch (Exception e){
@@ -161,13 +170,13 @@ public class NoteEditor extends AppCompatActivity {
 
     private String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "dd MMM, hh:mm aa", Locale.getDefault());
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         Date date = new Date();
         return dateFormat.format(date);
     }
     private String getDateTime(String dateStr) throws ParseException {
         SimpleDateFormat prevDateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd hh:mm:ss", Locale.getDefault());
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         Date date = prevDateFormat.parse(dateStr);
         SimpleDateFormat newDateFormat = new SimpleDateFormat(
                 "dd MMM, hh:mm aa", Locale.getDefault());

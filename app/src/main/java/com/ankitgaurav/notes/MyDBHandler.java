@@ -59,10 +59,10 @@ public class MyDBHandler extends SQLiteOpenHelper {
         note.setCreatedAt(cursor.getString(2));
         return note;
     }
-    public void addNote(String note){
+    public void addNote(Note note){
         ContentValues values = new ContentValues();
-        values.put(COLUMN_NOTE_TEXT, note);
-        values.put(COLUMN_CREATED_AT, getDateTime());
+        values.put(COLUMN_NOTE_TEXT, note.getNoteText());
+        values.put(COLUMN_CREATED_AT, note.getCreatedAt());
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         sqLiteDatabase.insert(TABLE_NOTES, null, values);
         sqLiteDatabase.close();
@@ -76,12 +76,13 @@ public class MyDBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
-    public void updateNote(int note_id, String note_text){
+    public void updateNote(int note_id, Note note){
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-        String deleteQuery = "UPDATE " + TABLE_NOTES + " SET "+ COLUMN_NOTE_TEXT +" = + note_text + WHERE " +
-                "" + COLUMN_ID + " = \"" +
-                note_id + "\";" ;
-        sqLiteDatabase.execSQL(deleteQuery);
+        String query = "UPDATE " + TABLE_NOTES + " SET " +
+                COLUMN_NOTE_TEXT +" = \"" + note.getNoteText() +
+                "\" WHERE " +  COLUMN_ID +
+                " = " + note_id + ";" ;
+        sqLiteDatabase.execSQL(query);
         sqLiteDatabase.close();
     }
 
@@ -107,10 +108,4 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return noteArrayList;
     }
 
-    private String getDateTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd hh:mm:ss", Locale.getDefault());
-        Date date = new Date();
-        return dateFormat.format(date);
-    }
 }
