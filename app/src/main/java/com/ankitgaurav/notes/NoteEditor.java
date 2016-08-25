@@ -20,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -27,6 +28,7 @@ import java.util.Locale;
 public class NoteEditor extends AppCompatActivity {
 
     MyDBHandler dbHandler;
+    private static int n_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +37,25 @@ public class NoteEditor extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle(getDateTime());
+
         dbHandler = new MyDBHandler(this);
+        Intent intent = getIntent();
+        String editType = intent.getStringExtra("type");
+
+        if(editType.equals("new")){
+            ab.setTitle(getDateTime());
+        }
+        else if(editType.equals("edit")){
+            n_id = intent.getIntExtra("note_id", 0);
+            Note note = dbHandler.getNoteById(n_id);
+            EditText editText = (EditText) findViewById(R.id.editTextNote);
+            editText.setText(note.getNoteText());
+            try {
+                ab.setTitle(getDateTime(note.getCreatedAt()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
 
       //code to show softkeyboard while entering into noteEditor activity
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -142,8 +161,16 @@ public class NoteEditor extends AppCompatActivity {
 
     private String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "dd MMM, HH:mm:aa", Locale.getDefault());
+                "dd MMM, hh:mm aa", Locale.getDefault());
         Date date = new Date();
         return dateFormat.format(date);
+    }
+    private String getDateTime(String dateStr) throws ParseException {
+        SimpleDateFormat prevDateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd hh:mm:ss", Locale.getDefault());
+        Date date = prevDateFormat.parse(dateStr);
+        SimpleDateFormat newDateFormat = new SimpleDateFormat(
+                "dd MMM, hh:mm aa", Locale.getDefault());
+        return newDateFormat.format(date);
     }
 }

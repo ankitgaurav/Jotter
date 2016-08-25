@@ -47,7 +47,18 @@ public class MyDBHandler extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-
+    public Note getNoteById(int id){
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        //Todo replace getWritableDB to getReadableDB
+        String query = "SELECT * FROM " + TABLE_NOTES + " WHERE " + COLUMN_ID + " = " + id;
+        Cursor cursor = sqLiteDatabase.rawQuery(query, null);
+        cursor.moveToFirst();
+        Note note = new Note();
+        note.set_id(Integer.parseInt(cursor.getString(0)));
+        note.setNoteText(cursor.getString(1));
+        note.setCreatedAt(cursor.getString(2));
+        return note;
+    }
     public void addNote(String note){
         ContentValues values = new ContentValues();
         values.put(COLUMN_NOTE_TEXT, note);
@@ -98,7 +109,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     private String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                "yyyy-MM-dd hh:mm:ss", Locale.getDefault());
         Date date = new Date();
         return dateFormat.format(date);
     }

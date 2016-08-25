@@ -36,19 +36,7 @@ public class NotesAdapter extends ArrayAdapter<Note> {
         TextView note_text = (TextView) convertView.findViewById(R.id.note_text);
         TextView note_created_at = (TextView) convertView.findViewById(R.id.note_created_at);
         String noteFullText = note.getNoteText();
-        int lineBreakPos = noteFullText.indexOf('\n');
-        String noteSnippet = "";
-        int snippetLength = 80;
-        if(lineBreakPos < 80){
-            snippetLength = 50;
-        }
-        if(noteFullText.length()>snippetLength){
-            noteSnippet = noteFullText.substring(0,snippetLength) + " ...";
-        }
-        else{
-            noteSnippet = noteFullText;
-        }
-        note_text.setText(noteSnippet);
+        note_text.setText(getNoteSnippet(noteFullText));
 
         String timeModified = "";
         try {
@@ -64,16 +52,31 @@ public class NotesAdapter extends ArrayAdapter<Note> {
     private String getDateTime(String date) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        long dateInMIillis = 0L;
+        long dateInMillis = 0L;
         try {
             Date mDate = dateFormat.parse(date);
-            dateInMIillis = mDate.getTime();
+            dateInMillis = mDate.getTime();
         } catch (ParseException e) {
             e.printStackTrace();
         }
         DateUtils dateUtils = new DateUtils();
-        CharSequence dateN = dateUtils.getRelativeDateTimeString(getContext(), dateInMIillis,60, WEEK_IN_MILLIS,
+        CharSequence dateN = dateUtils.getRelativeDateTimeString(getContext(), dateInMillis,60, WEEK_IN_MILLIS,
                 0);
         return dateN.toString();
+    }
+    private String getNoteSnippet(String s){
+        int lineBreakPos = s.indexOf('\n');
+        String noteSnippet = "";
+        int snippetLength = 80;
+        if(lineBreakPos < 80){
+            snippetLength = 50;
+        }
+        if(s.length()>snippetLength){
+            noteSnippet = s.substring(0,snippetLength) + " ...";
+        }
+        else{
+            noteSnippet = s;
+        }
+        return s;
     }
 }

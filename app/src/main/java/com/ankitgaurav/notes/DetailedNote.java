@@ -36,7 +36,6 @@ public class DetailedNote extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
         dbHandler = new MyDBHandler(this);
         Intent intent = getIntent();
-
         String note_created_at = intent.getStringExtra("note_created_at");
         final String noteText = intent.getStringExtra("noteText");
         if (savedInstanceState != null) {
@@ -64,6 +63,9 @@ public class DetailedNote extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_edit:
+                editThisNote();
+                return true;
             case R.id.action_delete:
                 deleteThisNote();
                 return true;
@@ -78,6 +80,13 @@ public class DetailedNote extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
+    private void editThisNote(){
+        Intent intent = new Intent(this, NoteEditor.class);
+        intent.putExtra("note_id", n_id);
+        intent.putExtra("type", "edit");
+        startActivity(intent);
+    }
+
     public void deleteThisNote(){
         dbHandler.deleteNote(n_id);
         Toast.makeText(this, "Note deleted successfully", Toast.LENGTH_SHORT).show();
@@ -89,10 +98,10 @@ public class DetailedNote extends AppCompatActivity {
     }
     private String getDateTime(String dateStr) throws ParseException {
         SimpleDateFormat prevDateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                "yyyy-MM-dd hh:mm:ss", Locale.getDefault());
         Date date = prevDateFormat.parse(dateStr);
         SimpleDateFormat newDateFormat = new SimpleDateFormat(
-                "dd MMM, HH:mm:aa", Locale.getDefault());
+                "dd MMM, hh:mm aa", Locale.getDefault());
         return newDateFormat.format(date);
     }
 }

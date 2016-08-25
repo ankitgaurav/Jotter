@@ -1,4 +1,4 @@
-package layout;
+package com.ankitgaurav.notes;
 
 
 import android.content.Intent;
