@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -44,7 +45,11 @@ public class NoteEditor extends AppCompatActivity {
 
         if(editType.equals("new")){
             n_id = -1;
-            ab.setTitle(getDateTime());
+            try {
+                ab.setTitle(getDateTime(getDateTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         else if(editType.equals("edit")){
             n_id = intent.getIntExtra("note_id", 0);
@@ -57,10 +62,8 @@ public class NoteEditor extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
-      //code to show softkeyboard while entering into noteEditor activity
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        //code to show softkeyboard while entering into noteEditor activity
+        showKeyboard(true);
     }
 
     @Override
@@ -86,8 +89,7 @@ public class NoteEditor extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        showKeyboard(false);
         super.onDestroy();
     }
 
@@ -111,13 +113,25 @@ public class NoteEditor extends AppCompatActivity {
         }
 
         //code to hide the soft keyboard while leaving activity
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        showKeyboard(false);
         returnHome();
     }
     private void returnHome(){
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+    }
+
+    private void showKeyboard(boolean state){
+        if(state){
+            getWindow().setSoftInputMode(
+                    WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
+            );
+        }
+        else{
+            getWindow().setSoftInputMode(
+                    WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
+            );
+        }
     }
 
     /*Check if external storage is available for read/write operations */
