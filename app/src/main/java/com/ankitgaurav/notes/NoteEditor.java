@@ -29,6 +29,7 @@ import java.util.Locale;
 public class NoteEditor extends AppCompatActivity {
 
     MyDBHandler dbHandler;
+    private String editType;
     private static int n_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,20 @@ public class NoteEditor extends AppCompatActivity {
 
         dbHandler = new MyDBHandler(this);
         Intent intent = getIntent();
-        String editType = intent.getStringExtra("type");
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                editType = "new";
+                EditText editText = (EditText) findViewById(R.id.editTextNote);
+                editText.setText(intent.getStringExtra(Intent.EXTRA_TEXT));
+            }
+        }
+        else{
+            editType = intent.getStringExtra("type");
+        }
+
 
         if(editType.equals("new")){
             n_id = -1;

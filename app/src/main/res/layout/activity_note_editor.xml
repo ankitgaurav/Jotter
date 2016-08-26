@@ -14,11 +14,10 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"/>
     <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="400dp"
-        android:ems="10"
         android:id="@+id/editTextNote"
-        android:textAppearance="@string/abc_font_family_body_1_material"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:ems="10"
         android:textSize="18sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -30,5 +29,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:inputType="textCapSentences|textMultiLine"
+        android:breakStrategy="high_quality"
+        android:typeface="serif"
         />
 </LinearLayout>

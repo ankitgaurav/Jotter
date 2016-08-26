@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.ankitgaurav.notes.DetailedNote">
@@ -16,28 +16,35 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
     <TextView
+        android:text="Note Text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@string/abc_font_family_body_1_material"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault"
         android:textSize="18sp"
-        android:text="Large Text"
         android:id="@+id/detailedNoteTextView"
         android:layout_below="@+id/detailed_note_toolbar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="6dp"/>
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:elegantTextHeight="true"
+        android:textIsSelectable="true"
+        android:breakStrategy="high_quality"
+        android:linksClickable="true"
+        android:autoLink="web|email|phone"
+        android:typeface="sans"
+        />
+    <TextView
+        android:text="info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/note_info_textView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:padding="16dp"/>
 
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/fab_edit_note"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom|end"-->
-        <!--android:layout_margin="@dimen/fab_margin"-->
-        <!--android:src="@android:drawable/ic_input_add"-->
-        <!--android:onClick="editNote"-->
-        <!--app:elevation="10dp"-->
-        <!--app:backgroundTint="?attr/colorPrimaryDark" />-->
 
 </RelativeLayout>

@@ -77,6 +77,6 @@ public class NotesAdapter extends ArrayAdapter<Note> {
         else{
             noteSnippet = s;
         }
-        return s;
+        return noteSnippet;
     }
 }

@@ -6,15 +6,43 @@
         android:id="@+id/action_lock"
         android:title="@string/Lock"
         app:showAsAction="never"
+        android:icon="@android:drawable/ic_lock_idle_lock"
+        android:orderInCategory="200"
         />
     <item
         android:title="@string/Edit"
         android:id="@+id/action_edit"
         app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:orderInCategory="100"
         />
     <item
         android:id="@+id/action_delete"
         android:title="@string/action_delete"
+        app:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:orderInCategory="300"
+        />
+    <item
+        android:id="@+id/action_save_to_txt"
+        android:title="@string/save_to_text"
+        android:orderInCategory="400"
         app:showAsAction="never"
+        />
+    <item
+        android:title="Info"
+        android:id="@+id/action_info"
+        android:icon="@android:drawable/ic_dialog_info"
+        android:orderInCategory="500"
+        app:showAsAction="never"
+        />
+    <item
+        android:title="@string/share"
+        android:id="@+id/action_share"
+        android:icon="@android:drawable/ic_menu_share"
+        android:orderInCategory="600"
+        app:showAsAction="always"
+        android:actionProviderClass=
+            "android.widget.ShareActionProvider" />
         />
 </menu>
