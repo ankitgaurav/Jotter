@@ -9,6 +9,7 @@ public class Note {
     private int _id;
     private String noteText;
     private String createdAt;
+    private int isLocked;
 
     public Note() {
     }
@@ -21,6 +22,14 @@ public class Note {
 
     public int get_id() {
         return _id;
+    }
+
+    public int getIsLocked() {
+        return isLocked;
+    }
+
+    public void setIsLocked(int isLocked) {
+        this.isLocked = isLocked;
     }
 
     public void set_id(int _id) {

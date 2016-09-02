@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        final MyDBHandler dbHandler = new MyDBHandler(this);
-        ArrayList<Note> arrayList = dbHandler.dbToNoteObjectArrayList();
+        final AppDBHandler dbHandler = new AppDBHandler(this);
+        ArrayList<Note> arrayList = dbHandler.getMultipleNotesArrayList();
 
         final NotesAdapter notesAdapter = new NotesAdapter(this, arrayList);
         final ListView listView = (ListView) findViewById(R.id.ListView);

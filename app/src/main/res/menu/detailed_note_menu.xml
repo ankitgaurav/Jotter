@@ -6,7 +6,7 @@
         android:id="@+id/action_lock"
         android:title="@string/Lock"
         app:showAsAction="never"
-        android:icon="@android:drawable/ic_lock_idle_lock"
+        android:icon="@android:drawable/ic_lock_lock"
         android:orderInCategory="200"
         />
     <item
@@ -19,7 +19,7 @@
     <item
         android:id="@+id/action_delete"
         android:title="@string/action_delete"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:icon="@android:drawable/ic_menu_delete"
         android:orderInCategory="300"
         />
@@ -41,7 +41,7 @@
         android:id="@+id/action_share"
         android:icon="@android:drawable/ic_menu_share"
         android:orderInCategory="600"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:actionProviderClass=
             "android.widget.ShareActionProvider" />
         />

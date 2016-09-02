@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -22,6 +23,10 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,8 +34,9 @@ import java.util.Locale;
 
 public class DetailedNote extends AppCompatActivity {
     private String noteText = "";
-    MyDBHandler dbHandler;
+    AppDBHandler dbHandler;
     private static int n_id;
+    private static int n_isLocked;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,9 +45,11 @@ public class DetailedNote extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
-        dbHandler = new MyDBHandler(this);
+        dbHandler = new AppDBHandler(this);
         Intent intent = getIntent();
         String note_created_at = intent.getStringExtra("note_created_at");
+        n_isLocked = intent.getIntExtra("note_is_locked", 0);
+
         noteText = intent.getStringExtra("noteText");
         if (savedInstanceState != null) {
             n_id = savedInstanceState.getInt("note_id");
@@ -56,8 +64,8 @@ public class DetailedNote extends AppCompatActivity {
         }
         TextView textView = (TextView) findViewById(R.id.detailedNoteTextView);
         textView.setText(noteText);
-        TextView infoTextView = (TextView) findViewById(R.id.note_info_textView);
-        infoTextView.setText(noteText.length() + " characters");
+//        TextView infoTextView = (TextView) findViewById(R.id.note_info_textView);
+//        infoTextView.setText(noteText.length() + " characters");
     }
 
     @Override
@@ -83,13 +91,26 @@ public class DetailedNote extends AppCompatActivity {
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
                 return true;
+            case R.id.action_lock:
+                //lockNote(n_isLocked);
+                Toast.makeText(this, "Note locked", Toast.LENGTH_SHORT).show();
+                return true;
             case R.id.action_save_to_txt:
-                Toast.makeText(this, "Note save to storage", Toast.LENGTH_LONG).show();
+                savedNoteAsTextFile(noteText);
+                Toast.makeText(this, "Note saved as txt file", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_info:
+                showInfo();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+//    private void lockNote(int n_isLocked) {
+//        int newFlag = dbHandler.toggleNoteLock(n_id, n_isLocked);
+//        n_isLocked = newFlag;
+//    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -104,12 +125,24 @@ public class DetailedNote extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void deleteThisNote(){
+    private void showInfo(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+
+        alertDialogBuilder.setTitle("Info")
+                .setCancelable(true)
+                .setMessage(noteText.length() + " characters\n" + noteText.split(" ").length + " " +
+                        "words");
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void deleteThisNote(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 this);
 
         alertDialogBuilder.setTitle("Delete this note?")
-                .setCancelable(false)
+                .setCancelable(true)
                 .setPositiveButton("Delete",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
                         dbHandler.deleteNote(n_id);
@@ -136,5 +169,41 @@ public class DetailedNote extends AppCompatActivity {
         SimpleDateFormat newDateFormat = new SimpleDateFormat(
                 "dd MMM", Locale.getDefault());
         return newDateFormat.format(date);
+    }
+
+    /*Check if external storage is available for read/write operations */
+    private   boolean isExternalStorageWritable(){
+        String state = Environment.getExternalStorageState();
+        if(Environment.MEDIA_MOUNTED.equals(state)){
+            return true;
+        }
+        return false;
+    }
+    /* Save Note data as a test file to External Storage */
+    private void savedNoteAsTextFile(String note){
+        if(isExternalStorageWritable()){
+            int end=10;
+            if(note.length()<end){
+                end = note.length();
+            }
+            String fileName = note.substring(0, end) + ".txt";
+            try{
+                File file = new File("/sdcard/Jotter/"+fileName);
+                file.createNewFile();
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
+                outputStreamWriter.append(note);
+                outputStreamWriter.close();
+                fileOutputStream.close();
+                Toast.makeText(this, "Note saved to sdcard/Jotter/"+fileName, Toast.LENGTH_SHORT)
+                        .show();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            Toast.makeText(this, "Write permission forbidden.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

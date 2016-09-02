@@ -1,7 +1,9 @@
 package com.ankitgaurav.notes;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,19 +13,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.ankitgaurav.notes.DetailedNote;
-import com.ankitgaurav.notes.MyDBHandler;
-import com.ankitgaurav.notes.Note;
-import com.ankitgaurav.notes.NotesAdapter;
-import com.ankitgaurav.notes.R;
-
 import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class NotesFragment extends Fragment {
-
 
     public NotesFragment() {
         // Required empty public constructor
@@ -38,11 +33,23 @@ public class NotesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notes, container, false);
-        final MyDBHandler notesDBHandler;
-        notesDBHandler = new MyDBHandler(container.getContext());
-        ArrayList<Note> arrayList = notesDBHandler.dbToNoteObjectArrayList();
+        final AppDBHandler notesDBHandler;
+        notesDBHandler = new AppDBHandler(container.getContext());
+        ArrayList<Note> arrayList = notesDBHandler.getMultipleNotesArrayList();
+        ArrayList<Note> unlockedArrayList =  new ArrayList<>();
 
-        final NotesAdapter notesAdapter = new NotesAdapter(getContext(), arrayList);
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        boolean lockStateBool = sharedPref.getBoolean("lockStateBool", true);
+        if(lockStateBool){
+            for(int i=0; i<arrayList.size(); i++){
+                if(arrayList.get(i).getIsLocked() == 0)
+                    unlockedArrayList.add(arrayList.get(i));
+            }
+        }
+        else{
+            unlockedArrayList = arrayList;
+        }
+        NotesAdapter notesAdapter = new NotesAdapter(getContext(), unlockedArrayList);
         final ListView notesListView = (ListView) view.findViewById(R.id
                 .NotesListView);
         notesListView.setAdapter(notesAdapter);
@@ -55,11 +62,11 @@ public class NotesFragment extends Fragment {
                 intent.putExtra("note_id", note.get_id());
                 intent.putExtra("note_created_at", note.getCreatedAt());
                 intent.putExtra("noteText", note.getNoteText());
+                intent.putExtra("note_is_locked", note.getIsLocked());
                 startActivity(intent);
             }
         });
         return view;
-
     }
 
 }

@@ -2,7 +2,9 @@ package com.ankitgaurav.notes;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,31 +20,22 @@ import java.util.List;
  */
 public class TodosFragment extends Fragment {
 
-
-    public List<Todo> fill_with_data() {
-
-        List<Todo> data = new ArrayList<>();
-        for(int i=0; i<50; i++){
-            data.add(new Todo("Anku and Sidra " + i));
-        }
-        return data;
-    }
     public TodosFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_todos, container, false);
-        List<Todo> data = fill_with_data();
+        final AppDBHandler appDBHandler;
+        appDBHandler = new AppDBHandler(getActivity());
+        ArrayList<Todo> arrayList = appDBHandler.getMultipleTodosArrayList("incomplete");
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.todos_recyclerview);
-        Todos_Adapter adapter = new Todos_Adapter(data, getContext());
+        Todos_Adapter adapter = new Todos_Adapter(arrayList, getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         return view;
     }
-
 }
