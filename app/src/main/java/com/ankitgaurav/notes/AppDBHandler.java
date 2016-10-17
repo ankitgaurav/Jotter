@@ -18,7 +18,7 @@ public class AppDBHandler extends SQLiteOpenHelper {
     private static final String LOG = "DatabaseHelper";
 
     //Database name and version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "appDB.db";
 
     //Table names
@@ -28,6 +28,7 @@ public class AppDBHandler extends SQLiteOpenHelper {
     //Common columns
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_CREATED_AT = "created_at";
+    private static final String COLUMN_IS_FLAGGED = "is_flagged";
 
     //todos table colums
     private static final String COLUMN_TODO_TEXT = "todos_text";
@@ -36,7 +37,6 @@ public class AppDBHandler extends SQLiteOpenHelper {
     //notes table columns
     private static final String COLUMN_NOTE_TEXT = "notes_text";
     private static final String COLUMN_IS_LOCKED = "is_locked";
-    private static final String COLUMN_IS_FLAGGED = "is_flagged";
 
     // Table Create Statements
     // Todos table create statement
@@ -44,6 +44,7 @@ public class AppDBHandler extends SQLiteOpenHelper {
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_TODO_TEXT + " TEXT, " +
             COLUMN_IS_COMPLETE + " TEXT, " +
+            COLUMN_IS_FLAGGED + " TEXT, " +
             COLUMN_CREATED_AT + " DATETIME " + ")";
     //Notes table create statement
     private static final String CREATE_TABLE_NOTES = "CREATE TABLE " + TABLE_NOTES + " ( " +
@@ -100,9 +101,8 @@ public class AppDBHandler extends SQLiteOpenHelper {
         ArrayList<Note> noteArrayList = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
 
-        String query = "SELECT * FROM " + TABLE_NOTES + " WHERE 1 ORDER BY "+
-                COLUMN_CREATED_AT +
-                "" + " DESC";
+        String query = "SELECT * FROM " + TABLE_NOTES + " WHERE " + COLUMN_IS_LOCKED + " = 0 " +
+                "ORDER BY " + COLUMN_CREATED_AT + "" + " DESC";
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
         cursor.moveToFirst();
 
@@ -145,6 +145,7 @@ public class AppDBHandler extends SQLiteOpenHelper {
         contentValues.put(COLUMN_TODO_TEXT, todo.getTodoText());
         contentValues.put(COLUMN_CREATED_AT, todo.getCreatedAt());
         contentValues.put(COLUMN_IS_COMPLETE, "false");
+        contentValues.put(COLUMN_IS_FLAGGED, "false");
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         sqLiteDatabase.insert(TABLE_TODOS, null, contentValues);
         sqLiteDatabase.close();
@@ -189,7 +190,7 @@ public class AppDBHandler extends SQLiteOpenHelper {
                 todo.setTodoText((cursor.getString(cursor.getColumnIndex(COLUMN_TODO_TEXT))));
                 todo.setCreatedAt(cursor.getString(cursor.getColumnIndex(COLUMN_CREATED_AT)));
                 todo.setIs_complete(cursor.getString(cursor.getColumnIndex(COLUMN_IS_COMPLETE)));
-
+                todo.setIs_flagged(cursor.getString(cursor.getColumnIndex(COLUMN_IS_FLAGGED)));
                 todosList.add(todo);
             } while (cursor.moveToNext());
         }
@@ -219,5 +220,28 @@ public class AppDBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(query);
         sqLiteDatabase.close();
     }
+    //flag todoItem
+    public void flagTodo(int id, String isFlagged){
+        if(isFlagged.equals("true")){
+            isFlagged = "false";
+        }
+        else{
+            isFlagged = "true";
+        }
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        String query = "UPDATE " + TABLE_TODOS + " SET " + COLUMN_IS_FLAGGED +
+                " = \"" + isFlagged + "\" WHERE " + COLUMN_ID + " = " + id + " ;";
+        sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
+    }
 
+    //toggle lock state of notes
+    public int toggleNoteLock(int n_id, int n_isLocked) {
+        int new_lock_state = 1 - n_isLocked;
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        String query = "UPDATE " + TABLE_NOTES + " SET " + COLUMN_IS_LOCKED +
+                " = " + new_lock_state + " WHERE " + COLUMN_ID + " = " + n_id + " ;";
+        sqLiteDatabase.execSQL(query);
+        return new_lock_state;
+    }
 }

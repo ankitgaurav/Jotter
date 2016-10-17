@@ -16,7 +16,10 @@
         android:id="@+id/editTextTodo"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:inputType="textCapSentences"/>
+        android:inputType="textCapSentences"
+        android:singleLine="true"
+        android:maxLength="100"
+        />
 
     <Button
         android:layout_width="match_parent"

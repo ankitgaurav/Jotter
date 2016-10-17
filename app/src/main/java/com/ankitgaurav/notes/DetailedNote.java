@@ -37,6 +37,7 @@ public class DetailedNote extends AppCompatActivity {
     AppDBHandler dbHandler;
     private static int n_id;
     private static int n_isLocked;
+    private String note_created_at = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +48,11 @@ public class DetailedNote extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
         dbHandler = new AppDBHandler(this);
         Intent intent = getIntent();
-        String note_created_at = intent.getStringExtra("note_created_at");
+        try {
+            note_created_at = getDetailedDateTime(intent.getStringExtra("note_created_at"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         n_isLocked = intent.getIntExtra("note_is_locked", 0);
 
         noteText = intent.getStringExtra("noteText");
@@ -57,15 +62,11 @@ public class DetailedNote extends AppCompatActivity {
             n_id = intent.getIntExtra("note_id", 0);
         }
 
-        try {
-            ab.setTitle(getDateTime(note_created_at));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        TextView info = (TextView) findViewById(R.id.detailed_note_info);
+        info.setText(note_created_at);
         TextView textView = (TextView) findViewById(R.id.detailedNoteTextView);
         textView.setText(noteText);
-//        TextView infoTextView = (TextView) findViewById(R.id.note_info_textView);
-//        infoTextView.setText(noteText.length() + " characters");
+
     }
 
     @Override
@@ -92,12 +93,11 @@ public class DetailedNote extends AppCompatActivity {
                 startActivity(sendIntent);
                 return true;
             case R.id.action_lock:
-                //lockNote(n_isLocked);
+                lockNote(n_isLocked);
                 Toast.makeText(this, "Note locked", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_save_to_txt:
                 savedNoteAsTextFile(noteText);
-                Toast.makeText(this, "Note saved as txt file", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_info:
                 showInfo();
@@ -107,10 +107,10 @@ public class DetailedNote extends AppCompatActivity {
         }
     }
 
-//    private void lockNote(int n_isLocked) {
-//        int newFlag = dbHandler.toggleNoteLock(n_id, n_isLocked);
-//        n_isLocked = newFlag;
-//    }
+    private void lockNote(int n_isLocked) {
+        int newFlag = dbHandler.toggleNoteLock(n_id, n_isLocked);
+        n_isLocked = newFlag;
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -129,10 +129,11 @@ public class DetailedNote extends AppCompatActivity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 this);
 
-        alertDialogBuilder.setTitle("Info")
+        alertDialogBuilder.setTitle("Note Info")
                 .setCancelable(true)
-                .setMessage(noteText.length() + " characters\n" + noteText.split(" ").length + " " +
-                        "words");
+                .setMessage("Total Characters: " + noteText.length() +
+                        "\nTotal words: " + noteText.split(" ").length +
+                        "\nCreated at: " + note_created_at);
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
@@ -170,17 +171,25 @@ public class DetailedNote extends AppCompatActivity {
                 "dd MMM", Locale.getDefault());
         return newDateFormat.format(date);
     }
+    private String getDetailedDateTime(String dateStr) throws ParseException {
+        SimpleDateFormat prevDateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = prevDateFormat.parse(dateStr);
+        SimpleDateFormat newDateFormat = new SimpleDateFormat(
+                "dd MMM, hh:mm aa", Locale.getDefault());
+        return newDateFormat.format(date);
+    }
 
     /*Check if external storage is available for read/write operations */
-    private   boolean isExternalStorageWritable(){
+    private boolean isExternalStorageWritable(){
         String state = Environment.getExternalStorageState();
         if(Environment.MEDIA_MOUNTED.equals(state)){
             return true;
         }
         return false;
     }
-    /* Save Note data as a test file to External Storage */
-    private void savedNoteAsTextFile(String note){
+    /* Save Note data as a text file to External Storage */
+    private boolean savedNoteAsTextFile(String note){
         if(isExternalStorageWritable()){
             int end=10;
             if(note.length()<end){
@@ -188,22 +197,29 @@ public class DetailedNote extends AppCompatActivity {
             }
             String fileName = note.substring(0, end) + ".txt";
             try{
-                File file = new File("/sdcard/Jotter/"+fileName);
+                File folder = new File(Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_DOCUMENTS), "JotterBackups");
+                if(!folder.exists()){
+                    folder.mkdir();
+                }
+                File file = new File(folder, fileName);
                 file.createNewFile();
                 FileOutputStream fileOutputStream = new FileOutputStream(file);
                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
                 outputStreamWriter.append(note);
                 outputStreamWriter.close();
                 fileOutputStream.close();
-                Toast.makeText(this, "Note saved to sdcard/Jotter/"+fileName, Toast.LENGTH_SHORT)
+                Toast.makeText(this, "Note saved in " + folder, Toast.LENGTH_SHORT)
                         .show();
             }
             catch (IOException e) {
                 e.printStackTrace();
             }
+            return true;
         }
         else{
             Toast.makeText(this, "Write permission forbidden.", Toast.LENGTH_SHORT).show();
+            return false;
         }
     }
 }

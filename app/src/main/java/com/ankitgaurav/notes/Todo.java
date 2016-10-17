@@ -8,17 +8,19 @@ public class Todo {
     private String todoText;
     private String createdAt;
     private int isLocked;
+    private String is_flagged;
     private String is_complete;
 
     public Todo(){
 
     }
 
-    public Todo(int _id, int isLocked, String createdAt, String todoText) {
+    public Todo(int _id, int isLocked, String createdAt, String todoText, String is_flagged) {
         this._id = _id;
         this.isLocked = isLocked;
         this.createdAt = createdAt;
         this.todoText = todoText;
+        this.is_flagged = is_flagged;
     }
 
     public Todo(String todoText) {
@@ -63,5 +65,13 @@ public class Todo {
 
     public void setIs_complete(String is_complete) {
         this.is_complete = is_complete;
+    }
+
+    public String getIs_flagged() {
+        return is_flagged;
+    }
+
+    public void setIs_flagged(String is_flagged) {
+        this.is_flagged = is_flagged;
     }
 }

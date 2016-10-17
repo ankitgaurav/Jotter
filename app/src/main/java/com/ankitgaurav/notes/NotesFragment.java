@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -49,24 +51,40 @@ public class NotesFragment extends Fragment {
         else{
             unlockedArrayList = arrayList;
         }
-        NotesAdapter notesAdapter = new NotesAdapter(getContext(), unlockedArrayList);
-        final ListView notesListView = (ListView) view.findViewById(R.id
-                .NotesListView);
-        notesListView.setAdapter(notesAdapter);
-        notesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Object o = notesListView.getItemAtPosition(position);
-                Note note=(Note)o;
-                Intent intent = new Intent(getContext(), DetailedNote.class);
-                intent.putExtra("note_id", note.get_id());
-                intent.putExtra("note_created_at", note.getCreatedAt());
-                intent.putExtra("noteText", note.getNoteText());
-                intent.putExtra("note_is_locked", note.getIsLocked());
-                startActivity(intent);
-            }
-        });
+        if(unlockedArrayList.size()==0){
+            TextView view1 = (TextView) view.findViewById(R.id.notes_placeholder_text1);
+            TextView view2 = (TextView) view.findViewById(R.id.notes_placeholder_text2);
+            view1.setVisibility(View.VISIBLE);
+            view2.setVisibility(View.VISIBLE);
+        }
+        else{
+            TextView view1 = (TextView) view.findViewById(R.id.notes_placeholder_text1);
+            TextView view2 = (TextView) view.findViewById(R.id.notes_placeholder_text2);
+            view1.setVisibility(View.GONE);
+            view2.setVisibility(View.GONE);
+
+            NotesAdapter notesAdapter = new NotesAdapter(getContext(), unlockedArrayList);
+            final ListView notesListView = (ListView) view.findViewById(R.id.NotesListView);
+
+//            View header = inflater.inflate(R.layout.header, null);
+//            TextView footer_text_view = (TextView) header.findViewById(R.id.notes_list_footer);
+//            footer_text_view.setText(unlockedArrayList.size() + " notes");
+//            notesListView.addFooterView(header);
+            notesListView.setAdapter(notesAdapter);
+            notesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    Object o = notesListView.getItemAtPosition(position);
+                    Note note = (Note)o;
+                    Intent intent = new Intent(getContext(), DetailedNote.class);
+                    intent.putExtra("note_id", note.get_id());
+                    intent.putExtra("note_created_at", note.getCreatedAt());
+                    intent.putExtra("noteText", note.getNoteText());
+                    intent.putExtra("note_is_locked", note.getIsLocked());
+                    startActivity(intent);
+                }
+            });
+        }
         return view;
     }
-
 }

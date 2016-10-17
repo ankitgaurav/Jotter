@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +33,24 @@ public class TodosFragment extends Fragment {
         appDBHandler = new AppDBHandler(getActivity());
         ArrayList<Todo> arrayList = appDBHandler.getMultipleTodosArrayList("incomplete");
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.todos_recyclerview);
-        Todos_Adapter adapter = new Todos_Adapter(arrayList, getContext());
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        if(arrayList.size()==0){
+            TextView view1 = (TextView) view.findViewById(R.id.todos_placeholder_text1);
+            TextView view2 = (TextView) view.findViewById(R.id.todos_placeholder_text2);
+            view1.setVisibility(View.VISIBLE);
+            view2.setVisibility(View.VISIBLE);
+        }
+        else{
+            TextView view1 = (TextView) view.findViewById(R.id.todos_placeholder_text1);
+            TextView view2 = (TextView) view.findViewById(R.id.todos_placeholder_text2);
+            view1.setVisibility(View.GONE);
+            view2.setVisibility(View.GONE);
+
+            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.todos_recyclerview);
+            Todos_Adapter adapter = new Todos_Adapter(arrayList, getContext());
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        }
+
         return view;
     }
 }

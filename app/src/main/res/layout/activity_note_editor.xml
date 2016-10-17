@@ -13,23 +13,30 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"/>
-    <EditText
-        android:id="@+id/editTextNote"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:ems="10"
-        android:textSize="18sp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="#00ffffff"
-        android:elegantTextHeight="true"
-        android:outlineProvider="none"
-        android:scrollIndicators="right"
-        android:gravity="start"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:inputType="textCapSentences|textMultiLine"
-        android:breakStrategy="high_quality"
-        android:typeface="serif"
-        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <EditText
+            android:id="@+id/editTextNote"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:ems="10"
+            android:hint="@string/write_here"
+            android:textSize="18sp"
+            android:textAppearance="@string/abc_font_family_body_1_material"
+            android:textColor="@color/cardview_dark_background"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:elegantTextHeight="true"
+            android:scrollIndicators="right"
+            android:gravity="start"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:inputType="textCapSentences|textMultiLine"
+            android:breakStrategy="high_quality"
+            android:typeface="serif"
+            android:backgroundTint="@color/background_material_light"
+            />
+    </ScrollView>
+
 </LinearLayout>

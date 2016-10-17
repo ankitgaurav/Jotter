@@ -9,5 +9,25 @@
         android:id="@+id/NotesListView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:choiceMode="multipleChoice"/>
+        android:choiceMode="multipleChoice"
+        android:layout_marginBottom="50dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="No Notes"
+        android:id="@+id/notes_placeholder_text1"
+        android:textColor="#777"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="110dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Click on the + button to add one"
+        android:id="@+id/notes_placeholder_text2"
+        android:layout_below="@+id/notes_placeholder_text1"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

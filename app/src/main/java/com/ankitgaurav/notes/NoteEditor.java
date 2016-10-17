@@ -123,7 +123,6 @@ public class NoteEditor extends AppCompatActivity {
             else{//code to add new note to database
                 saveNoteToDB(note1);
             }
-            //savedNoteAsTextFile(note);
         }
 
         //code to hide the soft keyboard while leaving activity
@@ -148,15 +147,6 @@ public class NoteEditor extends AppCompatActivity {
         }
     }
 
-//    /*Check if external storage is available for read/write operations */
-//    public  boolean isExternalStorageWritable(){
-//        String state = Environment.getExternalStorageState();
-//        if(Environment.MEDIA_MOUNTED.equals(state)){
-//            return true;
-//        }
-//        return false;
-//    }
-
     /* Save Note to SQLite Database */
     public void saveNoteToDB(Note note){
         try{
@@ -165,33 +155,6 @@ public class NoteEditor extends AppCompatActivity {
             Log.e("saveNoteToDB", String.valueOf(e));
         }
     }
-//
-//    /* Save Note data as a test file to External Storage */
-//    public void savedNoteAsTextFile(String note){
-//        if(isExternalStorageWritable()){
-//            int end=10;
-//            if(note.length()<end){
-//                end = note.length();
-//            }
-//            String fileName = note.substring(0, end) + ".txt";
-//            try{
-//                File file = new File("/sdcard/notes/"+fileName);
-//                file.createNewFile();
-//                FileOutputStream fileOutputStream = new FileOutputStream(file);
-//                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
-//                outputStreamWriter.append(note);
-//                outputStreamWriter.close();
-//                fileOutputStream.close();
-//                Toast.makeText(this, "/sdcard/"+fileName+": Note saved", Toast.LENGTH_SHORT).show();
-//            }
-//            catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        else{
-//            Toast.makeText(this, "Write permission forbidden.", Toast.LENGTH_SHORT).show();
-//        }
-//    }
 
     private String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(

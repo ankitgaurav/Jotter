@@ -26,7 +26,7 @@ public class TodoEditor extends AppCompatActivity {
     }
 
     public void clickAddTodo(View view){
-        String todoText = editText.getText().toString();
+        String todoText = editText.getText().toString().trim();
         if (todoText.equals("")) {//Empty note discarded
             return ;
         }
@@ -35,6 +35,7 @@ public class TodoEditor extends AppCompatActivity {
             todo.setTodoText(todoText);
             todo.setCreatedAt(getDateTime());
             todosDBHandler.addTodo(todo);
+
         }
         returnHome();
     }

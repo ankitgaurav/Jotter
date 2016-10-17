@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:id="@+id/detailed_note_info"
+        android:layout_below="@+id/detailed_note_scroller"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textAlignment="textEnd"
+        android:gravity="end"
+        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/detailed_note_scroller"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:paddingBottom="10dp">
+        <TextView
+            android:text="Note Text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@string/abc_font_family_body_1_material"
+            android:textSize="18sp"
+            android:id="@+id/detailedNoteTextView"
+            android:layout_below="@+id/detailed_note_toolbar"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="10dp"
+            android:elegantTextHeight="true"
+            android:textIsSelectable="true"
+            android:breakStrategy="high_quality"
+            android:linksClickable="true"
+            android:autoLink="web|email|phone"
+            android:typeface="sans"
+            />
+    </ScrollView>
+
+</RelativeLayout>

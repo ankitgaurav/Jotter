@@ -40,7 +40,7 @@ public class NotesAdapter extends ArrayAdapter<Note> {
 
         String timeModified = "";
         try {
-            timeModified = getDateTime(note.getCreatedAt());
+            timeModified = getShortDateTime(note.getCreatedAt());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -64,13 +64,18 @@ public class NotesAdapter extends ArrayAdapter<Note> {
                 0);
         return dateN.toString();
     }
+    private String getShortDateTime(String dateStr) throws ParseException {
+        SimpleDateFormat prevDateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd hh:mm:ss", Locale.getDefault());
+        Date date = prevDateFormat.parse(dateStr);
+        SimpleDateFormat newDateFormat = new SimpleDateFormat(
+                "dd MMM", Locale.getDefault());
+        return newDateFormat.format(date);
+    }
     private String getNoteSnippet(String s){
-        int lineBreakPos = s.indexOf('\n');
         String noteSnippet = "";
-        int snippetLength = 80;
-        if(lineBreakPos < 80){
-            snippetLength = 50;
-        }
+        int snippetLength = 75;
+        s = s.replaceAll("\n", " ");
         if(s.length()>snippetLength){
             noteSnippet = s.substring(0,snippetLength) + " ...";
         }

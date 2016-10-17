@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
@@ -14,43 +14,6 @@
         android:elevation="4dp"
         android:theme="@style/AppTheme"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+    <include layout="@layout/content_detailed_note" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize">
-        <TextView
-            android:text="Note Text"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
-            android:textSize="18sp"
-            android:id="@+id/detailedNoteTextView"
-            android:layout_below="@+id/detailed_note_toolbar"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="10dp"
-            android:elegantTextHeight="true"
-            android:textIsSelectable="true"
-            android:breakStrategy="high_quality"
-            android:linksClickable="true"
-            android:autoLink="web|email|phone"
-            android:typeface="sans"
-            />
-    </ScrollView>
-
-    <!--<TextView-->
-        <!--android:text="info"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
-        <!--android:id="@+id/note_info_textView"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:padding="16dp"/>-->
-
-
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

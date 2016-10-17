@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#26a69a</color>
+    <color name="colorPrimary">#4db6ac</color>
     <color name="colorPrimaryDark">#246e50</color>
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="windowBackground">#39ac7e</color>
     <color name="navigationBarColor">#004d40</color>
-    <color name="colorAccent">#c8e8ff</color>
+    <color name="colorAccent">#fafafa</color>
+    <color name="white">#fff</color>
+    <color name="text_color_primary">#333333</color>
+    <color name="colr_background">#eeeeee</color>
+    <color name="secondary_text_material_dark">#212121</color>
 </resources>
