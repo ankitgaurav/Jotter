@@ -137,6 +137,16 @@ public class AppDBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
+    //toggle lock state of notes
+    public int toggleNoteLock(int n_id, int n_isLocked) {
+        int new_lock_state = 1 - n_isLocked;
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        String query = "UPDATE " + TABLE_NOTES + " SET " + COLUMN_IS_LOCKED +
+                " = " + new_lock_state + " WHERE " + COLUMN_ID + " = " + n_id + " ;";
+        sqLiteDatabase.execSQL(query);
+        return new_lock_state;
+    }
+
 
     // ------------- Todos table methods -------------------- //4
     //Add single todoItem
@@ -235,13 +245,4 @@ public class AppDBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
-    //toggle lock state of notes
-    public int toggleNoteLock(int n_id, int n_isLocked) {
-        int new_lock_state = 1 - n_isLocked;
-        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-        String query = "UPDATE " + TABLE_NOTES + " SET " + COLUMN_IS_LOCKED +
-                " = " + new_lock_state + " WHERE " + COLUMN_ID + " = " + n_id + " ;";
-        sqLiteDatabase.execSQL(query);
-        return new_lock_state;
-    }
 }

@@ -71,13 +71,25 @@ public class NoteEditor extends AppCompatActivity {
             EditText editText = (EditText) findViewById(R.id.editTextNote);
             editText.setText(note.getNoteText());
             try {
-                ab.setTitle(getDateTime(note.getCreatedAt()));
+                ab.setTitle(getDateTime(getDateTime()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
         //code to show softkeyboard while entering into noteEditor activity
         showKeyboard(true);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        saveNote();
+        return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onBackPressed() {
+        saveNote();
+        super.onBackPressed();
     }
 
     @Override
@@ -90,10 +102,7 @@ public class NoteEditor extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.action_save:
-                saveNote();
-                return true;
-            case R.id.action_delete:
+            case R.id.action_cancel:
                 returnHome();
                 return true;
             default:
@@ -109,7 +118,7 @@ public class NoteEditor extends AppCompatActivity {
 
     private void saveNote(){
         EditText editText = (EditText) findViewById(R.id.editTextNote);
-        String note = editText.getText().toString();
+        String note = editText.getText().toString().trim();
         if (note.equals("")) {//Empty note discarded
             returnHome();
         }

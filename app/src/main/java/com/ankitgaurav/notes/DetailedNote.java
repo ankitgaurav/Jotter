@@ -147,7 +147,8 @@ public class DetailedNote extends AppCompatActivity {
                 .setPositiveButton("Delete",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
                         dbHandler.deleteNote(n_id);
-                        Toast.makeText(getApplicationContext(), "Note deleted successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Note deleted successfully",
+                                Toast.LENGTH_SHORT).show();
                         returnHome();
                     }
                 })

@@ -76,4 +76,5 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="search_hint">Search notes</string>
     <string name="write_here">Write here</string>
+    <string name="action_cancel">Cancel</string>
 </resources>
