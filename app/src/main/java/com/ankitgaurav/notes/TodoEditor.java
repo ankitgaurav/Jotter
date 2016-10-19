@@ -1,6 +1,7 @@
 package com.ankitgaurav.notes;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -37,7 +38,8 @@ public class TodoEditor extends AppCompatActivity {
             todosDBHandler.addTodo(todo);
 
         }
-        returnHome();
+        //returnHome();
+        finish();
     }
     private void returnHome(){
         Intent intent = new Intent(this, HomeActivity.class);

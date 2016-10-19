@@ -1,12 +1,14 @@
 package com.ankitgaurav.notes;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,11 @@ import java.util.List;
  */
 public class TodosFragment extends Fragment {
 
+    private RecyclerView  recyclerView;
+    private Todos_Adapter adapter;
+    ArrayList<Todo> arrayList;
+    AppDBHandler appDBHandler;
+
     public TodosFragment() {
         // Required empty public constructor
     }
@@ -29,9 +36,8 @@ public class TodosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_todos, container, false);
-        final AppDBHandler appDBHandler;
         appDBHandler = new AppDBHandler(getActivity());
-        ArrayList<Todo> arrayList = appDBHandler.getMultipleTodosArrayList("incomplete");
+        arrayList = appDBHandler.getMultipleTodosArrayList("incomplete");
 
         if(arrayList.size()==0){
             TextView view1 = (TextView) view.findViewById(R.id.todos_placeholder_text1);
@@ -45,12 +51,22 @@ public class TodosFragment extends Fragment {
             view1.setVisibility(View.GONE);
             view2.setVisibility(View.GONE);
 
-            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.todos_recyclerview);
-            Todos_Adapter adapter = new Todos_Adapter(arrayList, getContext());
+            recyclerView = (RecyclerView) view.findViewById(R.id.todos_recyclerview);
+            adapter = new Todos_Adapter(arrayList, getContext());
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         }
-
         return view;
     }
+
+    //Todo: make the todo editor to be revealed from the bottom
+    @Override
+    public void onResume() {
+        arrayList = appDBHandler.getMultipleTodosArrayList("incomplete");;
+        adapter = new Todos_Adapter(arrayList, getContext());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        super.onResume();
+    }
+
 }

@@ -77,4 +77,5 @@
     <string name="search_hint">Search notes</string>
     <string name="write_here">Write here</string>
     <string name="action_cancel">Cancel</string>
+    <string name="todo_text_field_hint">Write here</string>
 </resources>

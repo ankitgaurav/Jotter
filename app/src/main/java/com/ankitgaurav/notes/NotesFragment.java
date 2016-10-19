@@ -86,4 +86,6 @@ public class NotesFragment extends Fragment {
         }
         return view;
     }
+    //Todo: Add refresh feature to noteslistview
+    //Todo: Add functionality to Search
 }

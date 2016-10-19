@@ -100,7 +100,6 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             moveTaskToBack(true);
         }
-
     }
 
     @Override
