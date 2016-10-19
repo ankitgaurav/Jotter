@@ -171,3 +171,5 @@ public class HomeActivity extends AppCompatActivity {
         tabLayout.getTabAt(1).setIcon(tabIcons[1]);
     }
 }
+//Todo: Users should be able to make a note/todo quickly from notification drawer
+//Todo: Make all the db transaction to be done in a separate thread

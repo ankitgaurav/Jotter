@@ -39,6 +39,9 @@ public class TodosFragment extends Fragment {
         appDBHandler = new AppDBHandler(getActivity());
         arrayList = appDBHandler.getMultipleTodosArrayList("incomplete");
 
+        /* The following if-else block toggles the visibility of the placeholder
+        text that should be displayed if there is no todos items to be displayed
+         */
         if(arrayList.size()==0){
             TextView view1 = (TextView) view.findViewById(R.id.todos_placeholder_text1);
             TextView view2 = (TextView) view.findViewById(R.id.todos_placeholder_text2);
@@ -62,11 +65,18 @@ public class TodosFragment extends Fragment {
     //Todo: make the todo editor to be revealed from the bottom
     @Override
     public void onResume() {
+        /* The code below is simply refreshes the adapter for the todos
+        so that newly added todos  can be reflected upon re-entering the
+        fragment from the todos-editor activity
+
+        However, this code doesn't seem to be the right way to refresh the todos list
+        and should be replaced with a better technique
+         */
         arrayList = appDBHandler.getMultipleTodosArrayList("incomplete");;
         adapter = new Todos_Adapter(arrayList, getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         super.onResume();
     }
-
 }
+//Todo: Modify the UI of the detailed todo view and todo editor
