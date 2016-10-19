@@ -17,9 +17,13 @@ import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class Todos_Adapter extends RecyclerView.Adapter<View_Holder> {
 
@@ -49,16 +53,19 @@ public class Todos_Adapter extends RecyclerView.Adapter<View_Holder> {
         holder.title.setText(getSnippet(todoText, 40));
 
         if(isFlagged.equals("true")){
-            holder.starButton.setButtonDrawable(android.R.drawable.btn_star_big_on);
-            //holder.rl1.setBackgroundColor(Color.argb(100,255,0,0));
+            //holder.starButton.setButtonDrawable(android.R.drawable.btn_star_big_on);
+            holder.rl1.setBackgroundColor(Color.argb(100,255,0,0));
         }
 
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-
-                alertDialogBuilder.setTitle(todo_created_at).setMessage(todoText);
+                String time = "";
+                try{
+                    time = getDateTime(todo_created_at);
+                }catch (Exception e){}
+                alertDialogBuilder.setTitle(time).setMessage(todoText);
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
             }
@@ -69,12 +76,12 @@ public class Todos_Adapter extends RecyclerView.Adapter<View_Holder> {
                 remove(todo_id);
             }
         });
-        holder.starButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                appDBHandler.flagTodo(todo_id, isFlagged);
-            }
-        });
+//        holder.starButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                appDBHandler.flagTodo(todo_id, isFlagged);
+//            }
+//        });
     }
 
     @Override
@@ -110,4 +117,13 @@ public class Todos_Adapter extends RecyclerView.Adapter<View_Holder> {
         }
         return text;
     }
+    private String getDateTime(String dateStr) throws ParseException {
+        SimpleDateFormat prevDateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd hh:mm:ss", Locale.getDefault());
+        Date date = prevDateFormat.parse(dateStr);
+        SimpleDateFormat newDateFormat = new SimpleDateFormat(
+                "dd MMM, hh:mm:aa", Locale.getDefault());
+        return newDateFormat.format(date);
+    }
+
 }

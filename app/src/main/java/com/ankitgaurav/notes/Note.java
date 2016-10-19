@@ -51,4 +51,9 @@ public class Note {
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
+
+    @Override
+    public String toString() {
+        return getNoteText();
+    }
 }

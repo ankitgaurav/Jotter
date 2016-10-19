@@ -22,7 +22,7 @@ public class View_Holder extends RecyclerView.ViewHolder {
         cv = (CardView) itemView.findViewById(R.id.cardView);
         title = (TextView) itemView.findViewById(R.id.title);
         checkBox = (CheckBox) itemView.findViewById(R.id.checkBox);
-        starButton = (CheckBox) itemView.findViewById(R.id.star_todo);
-        rl1 = (RelativeLayout) starButton.getParent();
+        //starButton = (CheckBox) itemView.findViewById(R.id.star_todo);
+        //rl1 = (RelativeLayout) starButton.getParent();
     }
 }
