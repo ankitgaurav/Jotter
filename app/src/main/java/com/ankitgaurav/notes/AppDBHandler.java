@@ -144,6 +144,7 @@ public class AppDBHandler extends SQLiteOpenHelper {
         String query = "UPDATE " + TABLE_NOTES + " SET " + COLUMN_IS_LOCKED +
                 " = " + new_lock_state + " WHERE " + COLUMN_ID + " = " + n_id + " ;";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
         return new_lock_state;
     }
 
